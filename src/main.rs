@@ -1,4 +1,5 @@
 use std::env;
+use std::error::Error;
 use std::fs;
 use std::process;
 use std::string::String;
@@ -9,17 +10,16 @@ fn main() {
         print!("参数不对 {}", err);
         process::exit(1);
     });
-    // let query = &args[1];
-    // let filename = &args[2];
     print!(" In file {}", config.filename);
-    let contents = fs::read_to_string(config.filename).expect("读不到文件");
-    println!("文件是\n{}", contents);
+    // let contents = fs::read_to_string(config.filename).expect("读不到文件");
+    //  println!("文件是\n{}", contents);
+    run(config);
 }
-// fn parse_config(args: &[String]) -> Config {
-//     let query = args[1].clone();
-//     let filename = args[2].clone();
-//     Config { query, filename }
-// }
+fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    let contents = fs::read_to_string(config.filename)?;
+    println!("文件是\n{}", contents);
+    Ok(())
+}
 struct Config {
     query: String,
     filename: String,
